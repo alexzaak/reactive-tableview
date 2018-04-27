@@ -9,6 +9,7 @@
 import UIKit
 import RxSwift
 import RxCocoa
+import Toast_Swift // only to show selected cells
 
 class ViewController: UIViewController {
     
@@ -41,13 +42,15 @@ class ViewController: UIViewController {
     
     private func setupCellSelected() {
         self.tableView.rx.modelSelected(String.self).subscribe(onNext: {
-            title in print(title)
+            title in
+            self.view.makeToast("Selected: \(title)")
         }).disposed(by: disposeBag)
     }
     
     private func setupCelldeselected() {
         self.tableView.rx.modelDeselected(String.self).subscribe(onNext: {
-            title in print("deselected "+title)
+            title in
+            self.view.makeToast("Deselected: \(title)", duration: 3.0, position: .top)
         }).disposed(by: disposeBag)
     }
     
