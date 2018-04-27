@@ -31,6 +31,8 @@ class ViewController: UIViewController {
     
     private func setupTableView() {
         self.items
+            .observeOn(CurrentThreadScheduler.instance)
+            .subscribeOn(MainScheduler.instance)
             //.map{
             //    $0.filter{ $0.contains("Iron Man")} // filter your list
             // }
@@ -41,7 +43,11 @@ class ViewController: UIViewController {
     }
     
     private func setupCellSelected() {
-        self.tableView.rx.modelSelected(String.self).subscribe(onNext: {
+        self.tableView
+            .rx
+            .modelSelected(String.self)
+            .observeOn(MainScheduler.instance)
+            .subscribe(onNext: {
             title in
             self.view.makeToast("Selected: \(title)")
         }).disposed(by: disposeBag)
@@ -53,11 +59,5 @@ class ViewController: UIViewController {
             self.view.makeToast("Deselected: \(title)", duration: 3.0, position: .top)
         }).disposed(by: disposeBag)
     }
-    
-    override func didReceiveMemoryWarning() {
-        super.didReceiveMemoryWarning()
-        // Dispose of any resources that can be recreated.
-    }
-    
 }
 
