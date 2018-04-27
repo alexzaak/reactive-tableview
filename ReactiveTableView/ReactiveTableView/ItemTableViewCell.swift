@@ -7,9 +7,18 @@
 //
 
 import UIKit
+import RxSwift
 
 class ItemTableViewCell: UITableViewCell {
 
+    @IBOutlet weak var titleLabel: UILabel!
+    
+    var disposeBag:DisposeBag = DisposeBag()
+    
+    override func prepareForReuse() {
+        disposeBag = DisposeBag()
+    }
+    
     override func awakeFromNib() {
         super.awakeFromNib()
         // Initialization code
